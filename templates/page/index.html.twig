@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="articles-list">
+        <h1>Articles</h1>
+        
+        {% for post in posts %}
+            <div class="article-card">
+                <h2>
+                    <a href="{{ path('post_show', {id: post.id}) }}">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                
+                <p>{{ post.content|slice(0, 200) }}...</p>
+                
+                {% if post.categories|length > 0 %}
+                    <div class="categories">
+                        {% for category in post.categories %}
+                            <span class="category-tag">{{ category.name }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div style="margin-top: 1rem;">
+                    <a href="{{ path('post_show', {id: post.id}) }}" class="btn btn-primary">
+                        Lire la suite
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 3rem; color: #6c757d;">
+                <h3>Aucun article publié pour le moment</h3>
+                <p>Revenez bientôt pour découvrir nos nouveaux articles !</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

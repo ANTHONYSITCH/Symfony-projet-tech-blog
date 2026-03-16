@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <article class="post-detail">
+        <header class="post-header">
+            <h1>{{ post.title }}</h1>
+            <div class="post-meta">
+                {% if post.categories|length > 0 %}
+                    <div class="categories">
+                        {% for category in post.categories %}
+                            <span class="category-tag">{{ category.name }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+        
+        <div class="post-content">
+            <p>{{ post.content|nl2br }}</p>
+        </div>
+    </article>
+
+    <section class="comments-section">
+        <h2>Commentaires ({{ post.comments|length }})</h2>
+        
+        {% if post.comments|length > 0 %}
+            <div class="comments-list">
+                {% for comment in post.comments %}
+                    <div class="comment">
+                        <div class="comment-header">
+                            <strong class="comment-author">{{ comment.username }}</strong>
+                            <span class="comment-date">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                        </div>
+                        <div class="comment-content">
+                            <p>{{ comment.content|nl2br }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-comments">
+                <p>Soyez le premier à commenter cet article !</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="comment-form-section">
+        <h2>Ajouter un commentaire</h2>
+        
+        {{ form_start(form, {'attr': {'class': 'comment-form'}}) }}
+            <div class="form-group">
+                {{ form_label(form.username, 'Votre nom') }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}
+                {{ form_errors(form.username) }}
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.content, 'Votre commentaire') }}
+                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre commentaire', 'rows': 4}}) }}
+                {{ form_errors(form.content) }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Envoyer le commentaire</button>
+        {{ form_end(form) }}
+    </section>
+</div>
+{% endblock %} 
